@@ -71,36 +71,37 @@ def pregunta_03():
     Complete el código presentado a continuación.
     """
 
-    # Lea el archivo `gm_2008_region.csv` y asignelo al DataFrame `df`
-    df = pd.read_csv('gm_2008_region.csv')
+    # Lea el archivo `gm_2008_region.csv` y asígnelo al DataFrame `df`
+df = pd.read_csv('gm_2008_region.csv')
 
-    # Asigne a la variable los valores de la columna `fertility`
-    X_fertility = df['fertility'].values
+# Asigne a la variable los valores de la columna `fertility`
+X_fertility = df['fertility'].values.reshape(-1, 1)
 
-    # Asigne a la variable los valores de la columna `life`
-    y_life = df['life'].values
+# Asigne a la variable los valores de la columna `life`
+y_life = df['life'].values
 
-    # Importe LinearRegression
-    from sklearn.linear_model import LinearRegression
+# Importe LinearRegression
+from sklearn.linear_model import LinearRegression
 
-    # Cree una instancia del modelo de regresión lineal
-    reg = LinearRegression()
+# Cree una instancia del modelo de regresión lineal
+reg = LinearRegression()
 
-    # Cree El espacio de predicción. Esto es, use linspace para crear
-    # un vector con valores entre el máximo y el mínimo de X_fertility
-    prediction_space = np.linspace(
-        min(X_fertility),
-        max(X_fertility),
-    ).reshape(-1, 1)
+# Entrene el modelo usando X_fertility y y_life
+reg.fit(X_fertility, y_life)
 
-    # Entrene el modelo usando X_fertility y y_life
-    reg.fit(X_fertility, y_life)
+# Cree el espacio de predicción. Esto es, use linspace para crear
+# un vector con valores entre el mínimo y el máximo de X_fertility
+prediction_space = np.linspace(
+    min(X_fertility),
+    max(X_fertility),
+    num=len(X_fertility)  # Usar la longitud de X_fertility como el número de puntos
+).reshape(-1, 1)
 
-    # Compute las predicciones para el espacio de predicción
-    y_pred = reg.predict(prediction_space)
+# Compute las predicciones para el espacio de predicción
+y_pred = reg.predict(prediction_space)
 
-    # Imprima el R^2 del modelo con 4 decimales
-    print(reg.score(X_fertility, y_life).round(4))
+# Imprima el R^2 del modelo con 4 decimales
+print(reg.score(X_fertility, y_life).round(4))
 
 
 def pregunta_04():
@@ -114,17 +115,17 @@ def pregunta_04():
     from sklearn.metrics import mean_squared_error
 
     # Lea el archivo `gm_2008_region.csv` y asignelo al DataFrame `df`
-    df = df = pd.read_csv('gm_2008_region.csv')
+    df = pd.read_csv('gm_2008_region.csv')
 
     # Asigne a la variable los valores de la columna `fertility`
-    X_fertility = df['fertility'].values
+    X_fertility = df['fertility'].values.reshape(-1, 1)
 
     # Asigne a la variable los valores de la columna `life`
     y_life = df['life'].values
 
     # Divida los datos de entrenamiento y prueba. La semilla del generador de números
     # aleatorios es 53. El tamaño de la muestra de entrenamiento es del 80%
-    (X_train, X_test, y_train, y_test,) = train_test_split(
+    (X_train, X_test, y_train, y_test) = train_test_split(
         X_fertility,
         y_life,
         test_size=0.2,
@@ -138,7 +139,7 @@ def pregunta_04():
     linearRegression.fit(X_train, y_train)
 
     # Pronostique y_test usando X_test
-    y_pred = linearRegression.predict(X_test,y_test)
+    y_pred = linearRegression.predict(X_test)
 
     # Compute and print R^2 and RMSE
     print("R^2: {:6.4f}".format(linearRegression.score(X_test, y_test)))
